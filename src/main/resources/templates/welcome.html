@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+		<title>Welcome page</title>
+	</head>
+	<body>
+		Hi All..
+		<hr>
+		
+		User:<security:authentication property="principal.username"/>
+		<hr>
+		
+		<form th:action="${pageContext.request.contextPath}/logout" method ="POST">
+			<input type="submit" value="Logout">
+		</form>
+	
+	</body>
+</html>
