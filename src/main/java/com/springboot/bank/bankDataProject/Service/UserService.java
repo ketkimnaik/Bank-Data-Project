@@ -7,7 +7,9 @@ import com.springboot.bank.bankDataProject.form.RegisterUserform;
 
 public interface UserService extends UserDetailsService {
 
-	public User findByUsername(String username);
+//	public User findByUsername(String username);
 	
 	public void save(RegisterUserform user);
+	
+	public User findByemail(String email);
 }

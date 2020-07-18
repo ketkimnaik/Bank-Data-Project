@@ -24,8 +24,9 @@ public class LoginController {
 	
 	@GetMapping("/showMyLoginPage")
 	public ModelAndView showForm() {
+		
 		ModelAndView modelAndView = new ModelAndView("login_form");
-		System.out.println("Hi login");
+		
 		return modelAndView;
 	}
 	

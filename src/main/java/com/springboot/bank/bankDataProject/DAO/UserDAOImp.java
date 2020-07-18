@@ -16,15 +16,45 @@ public class UserDAOImp implements UserDAO {
 	@Autowired
 	private EntityManager entityManager;
 
+//	@Override
+//	public User findByUsername(String username) {
+//		
+////		get the current hibernate session
+//		Session session = entityManager.unwrap(Session.class);
+//		
+////		now retrieve/read from database using username
+//		Query<User> query = session.createQuery("from User where userName=:uName", User.class);
+//		query.setParameter("uName", username);
+//		
+//		User user = null;
+//		
+//		try {
+//			user = query.getSingleResult();
+//		} catch (Exception e) {
+//			user = null;
+//		}
+//
+//		return user;
+//	}
+
 	@Override
-	public User findByUsername(String username) {
+	public void save(User user) {
+//		get the current hibernate session
+		Session session = entityManager.unwrap(Session.class);
+		
+//		save the user in database
+		session.saveOrUpdate(user);
+	}
+	
+	@Override
+	public User findByemail(String email) {
 		
 //		get the current hibernate session
 		Session session = entityManager.unwrap(Session.class);
 		
-//		now retrieve/read from database using username
-		Query<User> query = session.createQuery("from User where userName=:uName", User.class);
-		query.setParameter("uName", username);
+//		now retrieve/read from database using email
+		Query<User> query = session.createQuery("from User where email=:uEmail", User.class);
+		query.setParameter("uEmail", email);
 		
 		User user = null;
 		
@@ -35,15 +65,6 @@ public class UserDAOImp implements UserDAO {
 		}
 
 		return user;
-	}
-
-	@Override
-	public void save(User user) {
-//		get the current hibernate session
-		Session session = entityManager.unwrap(Session.class);
-		
-//		save the user in database
-		session.saveOrUpdate(user);
 	}
 
 }

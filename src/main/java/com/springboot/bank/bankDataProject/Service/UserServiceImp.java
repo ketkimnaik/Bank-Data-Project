@@ -36,12 +36,12 @@ public class UserServiceImp implements UserService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
-	@Override
-	@Transactional
-	public User findByUsername(String username) {
-		
-		return userDAO.findByUsername(username);
-	}
+//	@Override
+//	@Transactional
+//	public User findByUsername(String username) {
+//		
+//		return userDAO.findByUsername(username);
+//	}
 
 	@Override
 	@Transactional
@@ -49,7 +49,7 @@ public class UserServiceImp implements UserService {
 		
 		User user = new User();
 		 // assign user details to the user object
-		user.setUserName(reguser.getUserName());
+//		user.setUserName(reguser.getUserName());
 		user.setPassword(passwordEncoder.encode(reguser.getPassword()));
 		user.setFirstName(reguser.getFirstName());
 		user.setLastName(reguser.getLastName());
@@ -63,12 +63,18 @@ public class UserServiceImp implements UserService {
 	
 	@Override
 	@Transactional
+	public User findByemail(String email) {
+		return userDAO.findByemail(email);
+	}
+	
+	@Override
+	@Transactional
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		User user = userDAO.findByUsername(userName);
+		User user = userDAO.findByemail(userName);
 		if (user == null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}
-		return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
 				mapRolesToAuthorities(user.getRoles()));
 	}
 

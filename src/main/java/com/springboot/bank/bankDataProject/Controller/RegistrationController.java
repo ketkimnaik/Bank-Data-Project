@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springboot.bank.bankDataProject.POJO.User;
 import com.springboot.bank.bankDataProject.Service.UserService;
@@ -38,42 +40,62 @@ public class RegistrationController {
 	}	
 	
 	@GetMapping("/showRegistrationForm")
-	public String showMyLoginPage(Model theModel) {
+	public ModelAndView showMyLoginPage(Model theModel) {
 		
 		theModel.addAttribute("crmUser", new RegisterUserform());
-		
-		return "registration-form";
+		ModelAndView modelAndView = new ModelAndView("registration-form");
+		return modelAndView;
 	}
 
 	@PostMapping("/processRegistrationForm")
-	public String processRegistrationForm(
+	public ModelAndView processRegistrationForm(
 				@Valid @ModelAttribute("crmUser") RegisterUserform theCrmUser, 
 				BindingResult theBindingResult, 
-				Model theModel) {
+				Model theModel, RedirectAttributes redirect) {
 		
-		String userName = theCrmUser.getUserName();
-		logger.info("Processing registration form for: " + userName);
+		 
+//		String userName = theCrmUser.getUserName();
+		String email = theCrmUser.getEmail();
+//		logger.info("Processing registration form for: " + userName);
 		
 		// form validation
 		 if (theBindingResult.hasErrors()){
-			 return "registration-form";
+			 return new ModelAndView("registration-form");
 	        }
 
 		// check the database if user already exists
-        User existing = userService.findByUsername(userName);
-        if (existing != null){
+//        User existing = userService.findByUsername(userName);
+          User existing_email = userService.findByemail(email);
+        
+//        if (existing != null){
+//        	
+//        	theModel.addAttribute("crmUser", new RegisterUserform());
+//        	
+//        	theModel.addAttribute("registrationError", "User name already exists.");
+//        	
+//			logger.warning("User name already exists.");
+//        	return "registration-form";
+//        }
+        
+        if(existing_email != null) {
+        	
+        	
         	theModel.addAttribute("crmUser", new RegisterUserform());
-			theModel.addAttribute("registrationError", "User name already exists.");
-
-			logger.warning("User name already exists.");
-        	return "registration-form";
+        	
+        	theModel.addAttribute("registrationError", "Email already exists.");
+        	
+			logger.warning("Email already exists.");
+        	return new ModelAndView("registration-form");
+        	
         }
         
         // create user account        						
         userService.save(theCrmUser);
         
-        logger.info("Successfully created user: " + userName);
+        redirect.addFlashAttribute("newUserSaveStatus", true);
         
-        return "registration-confirmation";		
+//        logger.info("Successfully created user: " + userName);
+        
+        return new ModelAndView("redirect:/showMyLoginPage");	
 	}
 }
