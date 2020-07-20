@@ -61,7 +61,7 @@ public class RegistrationController {
 		// form validation
 		 if (theBindingResult.hasErrors()){
 			 return new ModelAndView("registration-form");
-	        }
+	     }
 
 		// check the database if user already exists
 //        User existing = userService.findByUsername(userName);
