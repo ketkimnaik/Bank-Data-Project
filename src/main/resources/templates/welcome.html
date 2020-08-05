@@ -1,141 +1,116 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-
-<head>
-	<title>luv2code Company Home Page</title>
-		<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ 
+<!--  main-fragment (title, otherStaticResources, header, nav, mainContent, footer)  -->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout :: main-fragment(  
+                                                ~{::title},
+                                                ~{:: #home-static-resources},
+                                                ~{:: #home-header},
+                                                ~{:: #home-nav},
+                                                ~{:: #home-main-content},  
+                                                ~{:: #home-footer}
+                                               )}">
+                                                
+	<head>
+		<title>Title of Home Page</title>
+	     
+	    <th:block id="home-static-resources">
+			<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}" href="../static/bootstrap.min.css"/>
+			<script type="text/javascript" src="../static/bootstrap.min.js"  th:src="@{/bootstrap.min.js}"></script>
+			<script type="text/javascript" src="../static/jquery.min.js" th:src="@{/jquery.min.js}"></script>
+	       
+	    </th:block>
+     </head>
+	 <body>
+	 
+	    <div id="home-header">
+	        
+	        
+			<h1>Hi <span th:text="${session.user.firstName}" ></span></h1>
 	
-	<!-- Reference Bootstrap files -->
-	<link rel="stylesheet"
-		 href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-	
-	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	
-		<style>
-		.error {color:red}
-	</style>
-</head>
-
-<body>
-	<h2>luv2code Company Home Page</h2>
-	<hr>
-	
-	<p>
-	Welcome to  home page!
-	</p>
-	
-	<hr>
-	
-	<!-- display user name and role -->
-	
-	<div>
-		User: <span th:text="${session.user.firstName}" ></span>
-		<br><br>
-		Role(s): <span sec:authentication="principal.authorities"></span>
-		<br><br>
-
-		<!-- Check for login error -->																	
-		<div th:if="${session.user}" >
-			<p th:text="'First name: ' + ${session.user.firstName} + ', Last name: ' + ${session.user.lastName} + ', Email: ' + ${session.user.email}"></p>
-		</div>		
-	</div>
-	
-	<div sec:authorize="hasRole('ROLE_MANAGER')">
-	
-		<!-- Add a link to point to /leaders ... this is for the managers -->
-		
-		<p>
-			<a th:href="@{/leaders}">Leadership Meeting</a>
-			(Only for Manager peeps)
-		</p>
-
-	</div>	
-
-	<div sec:authorize="hasRole('ROLE_ADMIN')">  
-
-		<!-- Add a link to point to /systems ... this is for the admins -->
-		
-		<p>
-			<a th:href="@{/systems}">IT Systems Meeting</a>
-			(Only for Admin peeps)
-		</p>
-	
-	</div>
-
-	<hr>
-	
-	<!-- Registration Form -->
-	<form th:action="@{/processSwiftRequest}" 
-		  	   th:object="${swiftCode}" method="POST"
-		  	   class="form-horizontal">
-		  	   
-		 <input type="text" th:field="*{swiftcode}" placeholder="Swift Code (*)" />
-		  	   
-		  	   	<!-- Register Button -->
-		<div style="margin-top: 10px" class="form-group">						
-			<div class="col-sm-6 controls">
-				<button type="submit" class="btn btn-primary">Enter</button>
-			</div>
-		</div>
-		
-		<div th:if="${table_exist}" 
-			class="alert alert-success col-xs-offset-1 col-xs-10">
-				<table class="table table-bordered table-striped">
-				<thead class="thead-dark">
-					<tr>
-						<th>Swift</th>
-						<th>Bank</th>
-						<th>Branch</th>
-						<th>Address</th>
-						<th>city</th>
-						<th>Pincode</th>
-						<th>Country</th>
-						
-					</tr>
-				</thead>
+	        <nav> 
+			    <ul  th:fragment = "nav-default">
+			        <li><a th:href="@{/}">Home</a></li>
+			        <li>
+			        	<form th:action="@{/logout}" 
+						   method="POST">
+						   
+							<input type="submit" value="Logout" />
 				
-				<tbody>
-					<tr th:each="temp : ${SwiftCodeModel}">
+						</form>	
+					</li>
+			        
+			    </ul>
+		    </nav>
+	        <div style="clear: both"></div>
+	        	
+	    </div>
+	     
+
+	 
+	    <div id="home-main-content">
+	        <div>
+				<!-- Registration Form -->
+				<form th:action="@{/processSwiftRequest}" 
+					  	   th:object="${swiftCode}" method="POST"
+					  	   class="form-horizontal">
 					
-						<td th:text="${temp.swift}" />	
-						<td th:text="${temp.bank}" />	
-						<td th:text="${temp.branch}" />
-						<td th:text="${temp.address}" />
-						<td th:text="${temp.city}" />
-						<td th:text="${temp.pincode}" />
-						<td th:text="${temp.country}" />
+					
+					<div style="width:150px"><p>Enter Swift Code <input  type="text" th:field="*{swiftcode}" th:errorclass="fieldError"></p> 
+					</div>
+					
+					<div style="width:130px;margin-left: 160px;margin-top: -52px">
+					<button type="submit" class="btn btn-primary">Enter</button>
+					</div>
+					
+					<div th:if="${#fields.hasErrors('swiftcode')}"
+						style="margin-bottom: 25px" class="text-danger">
+						<ul>
+						  <li th:each="err : ${#fields.errors('swiftcode')}" th:text="'Swift Code ' + ${err}" />
+						</ul>						
+					</div>	   
+					 
+					
+					
+					<div th:if="${table_exist}" >
 						
-						
-					</tr>
-				</tbody>		
-			</table>
-		</div>		
-		
-	</form>
-
-	
-	
-	
-	<!-- Add a logout button -->
-	<form th:action="@{/logout}" 
-			   method="POST">
-			   
-		<input type="submit" value="Logout" />
-	
-	</form>	
-			
-</body>
-
+							<table class="table table-bordered table-striped">
+							<thead class="thead-dark">
+								<tr>
+									<th>Swift</th>
+									<th>Bank</th>
+									<th>Branch</th>
+									<th>Address</th>
+									<th>city</th>
+									<th>Pincode</th>
+									<th>Country</th>
+									
+								</tr>
+							</thead>
+							
+							<tbody>
+								<tr th:each="temp : ${SwiftCodeModel}">
+								
+									<td th:text="${temp.swift}" />	
+									<td th:text="${temp.bank}" />	
+									<td th:text="${temp.branch}" />
+									<td th:text="${temp.address}" />
+									<td th:text="${temp.city}" />
+									<td th:text="${temp.pincode}" />
+									<td th:text="${temp.country}" />
+									
+									
+								</tr>
+							</tbody>		
+						</table>
+					</div>		
+					
+				</form>
+	        </div>
+	    </div>
+	     
+	     
+	    <div id="home-footer" th:replace="~{/fragments/app-fragments :: copyright}"/>
+	        
+	</body>
 </html>
-
-
-
-
-
-
-
-
-

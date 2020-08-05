@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<title>App Fragments</title>
+	</head>
+<body>
+     
+     
+    <!-- Default Navigator -->
+    <nav> 
+	    <ul  th:fragment = "nav-default">
+	        <li><a th:href="@{/}">Home</a></li>
+	        <li>
+	        	<form th:action="@{/logout}" 
+				   method="POST">
+				   
+					<input type="submit" value="Logout" />
+		
+				</form>	
+			</li>
+	        
+	    </ul>
+    </nav>
+       
+     
+     
+    <div th:fragment="copyright">
+      &copy; ketkiandswapnil.com
+    </div>
+     
+     
+ 
+</body>
+</html>
