@@ -50,16 +50,15 @@
 	 
 	    <div id="home-main-content">
 	        <div>
-				<!-- Registration Form -->
+				<!-- Logout Form -->
 				<form th:action="@{/processSwiftRequest}" 
 					  	   th:object="${swiftCode}" method="POST"
 					  	   class="form-horizontal">
 					
 					
-					<div style="width:150px"><p>Enter Swift Code <input  type="text" th:field="*{swiftcode}" th:errorclass="fieldError"></p> 
-					</div>
-					
-					<div style="width:130px;margin-left: 160px;margin-top: -52px">
+					<div >
+					<p>Enter Swift Code </p> 
+					<input  type="text" th:field="*{swiftcode}" placeholder="swift code" th:errorclass="fieldError">
 					<button type="submit" class="btn btn-primary">Enter</button>
 					</div>
 					
@@ -70,7 +69,7 @@
 						</ul>						
 					</div>	   
 					 
-					
+					<br> <br> <br>
 					
 					<div th:if="${table_exist}" >
 						
@@ -103,7 +102,10 @@
 								</tr>
 							</tbody>		
 						</table>
-					</div>		
+					</div>	
+					<div th:if="${table_not_exist}" >
+					<p> Swift Code is Incorrect !!</p>
+					</div>
 					
 				</form>
 	        </div>

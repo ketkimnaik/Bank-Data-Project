@@ -78,6 +78,11 @@ public class LoginController {
         	return new ModelAndView("welcome");
         }
         
+        if(exist_code == null) {
+        	theModel.addAttribute("table_not_exist", true);
+        	return new ModelAndView("welcome");
+        }
+        
         return new ModelAndView("welcome");	
 	}
 	
