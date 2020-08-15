@@ -33,10 +33,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		System.out.println("userName=" + userName);
 
 		User user = userService.findByemail(userName);
-		
 		// now place in the session
 		HttpSession session = request.getSession();
 		session.setAttribute("user", user);
+		
 		
 		// forward to home page
 		

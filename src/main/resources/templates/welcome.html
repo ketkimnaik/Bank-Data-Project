@@ -25,16 +25,30 @@
 	 
 	    <div id="home-header">
 	        
-	        
-			<h1>Hi <span th:text="${session.user.firstName}" ></span></h1>
+	        <div th:if="${name_exist}" >
+	        	<h1>Hi <span th:text="${name}" ></span></h1>
+	        </div>
+	        <div th:if="${name_not_exist}" >
+	        	<h1>Hi <span th:text="${session.user.firstName}" ></span></h1>
+	        </div>
+			
 	
 	        <nav> 
 			    <ul  th:fragment = "nav-default">
-			        <li><a th:href="@{/}">Home</a></li>
+			        <li>
+			        	<div th:if="${name_exist}" >
+			        		<a th:href="@{/oauth2LoginSuccess}">Home</a>
+			        	</div>
+			        	<div th:if="${name_not_exist}" >
+	        				<a th:href="@{/}">Home</a>
+	        			</div>
+			
+			        
+			        </li>
 			        <li>
 			        	<form th:action="@{/logout}" 
 						   method="POST">
-						   
+						    
 							<input type="submit" value="Logout" />
 				
 						</form>	
@@ -50,64 +64,67 @@
 	 
 	    <div id="home-main-content">
 	        <div>
-				<!-- Logout Form -->
-				<form th:action="@{/processSwiftRequest}" 
-					  	   th:object="${swiftCode}" method="POST"
-					  	   class="form-horizontal">
-					
-					
-					<div >
-					<p>Enter Swift Code </p> 
-					<input  type="text" th:field="*{swiftcode}" placeholder="swift code" th:errorclass="fieldError">
-					<button type="submit" class="btn btn-primary">Enter</button>
-					</div>
-					
-					<div th:if="${#fields.hasErrors('swiftcode')}"
-						style="margin-bottom: 25px" class="text-danger">
-						<ul>
-						  <li th:each="err : ${#fields.errors('swiftcode')}" th:text="'Swift Code ' + ${err}" />
-						</ul>						
-					</div>	   
-					 
-					<br> <br> <br>
-					
-					<div th:if="${table_exist}" >
+				<!-- Swift form-->
+				
+				
+					<form th:action="@{/processSwiftRequest}" 
+						  	   th:object="${swiftCode}" method="POST"
+						  	   class="form-horizontal">
 						
-							<table class="table table-bordered table-striped">
-							<thead class="thead-dark">
-								<tr>
-									<th>Swift</th>
-									<th>Bank</th>
-									<th>Branch</th>
-									<th>Address</th>
-									<th>city</th>
-									<th>Pincode</th>
-									<th>Country</th>
-									
-								</tr>
-							</thead>
+						
+						<div >
+						<p>Enter Swift Code </p> 
+						<input  type="text" th:field="*{swiftcode}" placeholder="swift code" th:errorclass="fieldError">
+						<button type="submit" class="btn btn-primary">Enter</button>
+						</div>
+						
+						<div th:if="${#fields.hasErrors('swiftcode')}"
+							style="margin-bottom: 25px" class="text-danger">
+							<ul>
+							  <li th:each="err : ${#fields.errors('swiftcode')}" th:text="'Swift Code ' + ${err}" />
+							</ul>						
+						</div>	   
+						 
+						<br> <br> <br>
+						
+						<div th:if="${table_exist}" >
 							
-							<tbody>
-								<tr th:each="temp : ${SwiftCodeModel}">
+								<table class="table table-bordered table-striped">
+								<thead class="thead-dark">
+									<tr>
+										<th>Swift</th>
+										<th>Bank</th>
+										<th>Branch</th>
+										<th>Address</th>
+										<th>city</th>
+										<th>Pincode</th>
+										<th>Country</th>
+										
+									</tr>
+								</thead>
 								
-									<td th:text="${temp.swift}" />	
-									<td th:text="${temp.bank}" />	
-									<td th:text="${temp.branch}" />
-									<td th:text="${temp.address}" />
-									<td th:text="${temp.city}" />
-									<td th:text="${temp.pincode}" />
-									<td th:text="${temp.country}" />
+								<tbody>
+									<tr th:each="temp : ${SwiftCodeModel}">
 									
-									
-								</tr>
-							</tbody>		
-						</table>
-					</div>	
-					<div th:if="${table_not_exist}" >
-					<p> Swift Code is Incorrect !!</p>
-					</div>
-					
-				</form>
+										<td th:text="${temp.swift}" />	
+										<td th:text="${temp.bank}" />	
+										<td th:text="${temp.branch}" />
+										<td th:text="${temp.address}" />
+										<td th:text="${temp.city}" />
+										<td th:text="${temp.pincode}" />
+										<td th:text="${temp.country}" />
+										
+										
+									</tr>
+								</tbody>		
+							</table>
+						</div>	
+						<div th:if="${table_not_exist}" >
+							<p> Swift Code is Incorrect !!</p>
+						</div>
+						
+					</form>
+				
 	        </div>
 	    </div>
 	     

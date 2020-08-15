@@ -22,6 +22,17 @@
 		<div id="loginbox" style="margin-top: 50px;"
 			class="mainbox col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">
 			
+			<div  class="container">
+			
+				<h3 class="text-left">Sign in</h3>		
+		        
+		        <div>
+					<a th:href="@{/oauth2/authorization/facebook}" class="btn btn-primary" role="button" >Sign in with facebook</a>
+				</div>
+			<div class="or-seperator"><i>or</i></div> 
+			
+			</div>
+			
 			<div class="panel panel-info">
 
 				<div class="panel-heading">
@@ -85,7 +96,7 @@
 				</div>
 				
 			</div>
-
+			
 			<div>
 				<a th:href="@{/register/showRegistrationForm}" class="btn btn-primary" role="button" aria-pressed="true">Register New User</a>
 			</div>
